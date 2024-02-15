@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nikendo.app.todolist.ui.theme.ToDoListTheme
+import com.nikendo.app.todolist.ui.theme.MyTheme
 import com.nikendo.app.todolist.viewModels.TaskViewModel
 import com.nikendo.app.todolist.views.NewTaskSheetContent
 import com.nikendo.app.todolist.views.TaskScreen
@@ -37,7 +37,7 @@ final class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ToDoListTheme {
+            MyTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -93,7 +93,7 @@ fun MyApp() {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    ToDoListTheme {
+    MyTheme {
         MyApp()
     }
 }
