@@ -53,8 +53,8 @@ fun TaskView(
 fun TaskViewPreview() {
     MyTheme {
         Column {
-            TaskView(task = Task("0", "Homework", false), onTaskClick = {})
-            TaskView(task = Task("0", "Homework", true), onTaskClick = {})
+            TaskView(task = Task(name = "Homework", isDone = false), onTaskClick = {})
+            TaskView(task = Task(name = "Homework", isDone = true), onTaskClick = {})
         }
     }
 }

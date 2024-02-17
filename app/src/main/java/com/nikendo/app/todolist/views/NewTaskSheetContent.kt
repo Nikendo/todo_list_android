@@ -23,7 +23,6 @@ import com.nikendo.app.todolist.models.Task
 import com.nikendo.app.todolist.viewModels.TaskViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,9 +38,9 @@ fun NewTaskSheetContent(
             viewModel.processIntent(
                 TaskIntent.AddTask(
                     Task(
-                        UUID.randomUUID().toString(),
-                        text.text,
-                        false
+//                        UUID.randomUUID(),
+                        name = text.text,
+                        isDone = false
                     )
                 )
             )

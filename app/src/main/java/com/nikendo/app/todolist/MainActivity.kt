@@ -41,7 +41,8 @@ final class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.onBackground
                 ) {
                     MyApp()
                 }
@@ -53,7 +54,7 @@ final class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp() {
-    val viewModel: TaskViewModel = viewModel()
+    val viewModel: TaskViewModel = viewModel(factory = TaskViewModel.factory)
     val state = viewModel.state.collectAsState().value
 
     val sheetState = rememberModalBottomSheetState()
@@ -62,7 +63,9 @@ fun MyApp() {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(stringResource(R.string.task_list)) })
+            TopAppBar(title = {
+                Text(stringResource(R.string.task_list))
+            })
         },
         content = { padding ->
             TaskScreen(state, viewModel::processIntent, Modifier.padding(padding))
