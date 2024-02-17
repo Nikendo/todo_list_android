@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.nikendo.app.todolist.intents.TaskIntent
-import com.nikendo.app.todolist.models.Task
+import com.nikendo.app.todolist.models.TaskEntity
 import com.nikendo.app.todolist.viewModels.TaskViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -37,8 +37,7 @@ fun NewTaskSheetContent(
         if (text.text.isNotBlank()) {
             viewModel.processIntent(
                 TaskIntent.AddTask(
-                    Task(
-//                        UUID.randomUUID(),
+                    TaskEntity(
                         name = text.text,
                         isDone = false
                     )

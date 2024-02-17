@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.nikendo.app.todolist.App
 import com.nikendo.app.todolist.intents.TaskIntent
-import com.nikendo.app.todolist.models.Task
+import com.nikendo.app.todolist.models.TaskEntity
 import com.nikendo.app.todolist.repository.AppDatabase
 import com.nikendo.app.todolist.states.TaskState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,14 +39,14 @@ class TaskViewModel(private val database: AppDatabase) : ViewModel() {
         }
     }
 
-    private fun addTask(task: Task) {
+    private fun addTask(task: TaskEntity) {
         // add new task to list
         viewModelScope.launch {
             database.taskDao().insertTask(task)
         }
     }
 
-    private fun updateTask(task: Task) {
+    private fun updateTask(task: TaskEntity) {
         // change task state
         viewModelScope.launch {
             database.taskDao().updateTask(task)

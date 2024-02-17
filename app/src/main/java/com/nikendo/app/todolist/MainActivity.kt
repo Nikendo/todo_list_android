@@ -31,7 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nikendo.app.todolist.ui.theme.MyTheme
 import com.nikendo.app.todolist.viewModels.TaskViewModel
 import com.nikendo.app.todolist.views.NewTaskSheetContent
-import com.nikendo.app.todolist.views.TaskScreen
+import com.nikendo.app.todolist.views.task.TaskScreenView
 
 final class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +68,7 @@ fun MyApp() {
             })
         },
         content = { padding ->
-            TaskScreen(state, viewModel::processIntent, Modifier.padding(padding))
+            TaskScreenView(state, viewModel::processIntent, Modifier.padding(padding))
             if (showBottomSheet) {
                 ModalBottomSheet(
                     onDismissRequest = { showBottomSheet = false },

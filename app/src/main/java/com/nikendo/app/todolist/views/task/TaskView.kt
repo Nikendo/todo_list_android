@@ -1,4 +1,4 @@
-package com.nikendo.app.todolist.views
+package com.nikendo.app.todolist.views.task
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,13 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nikendo.app.todolist.models.Task
+import com.nikendo.app.todolist.models.TaskEntity
 import com.nikendo.app.todolist.ui.theme.MyTheme
 
 @Composable
 fun TaskView(
-    task: Task,
-    onTaskClick: (Task) -> Unit
+    task: TaskEntity,
+    onTaskClick: (TaskEntity) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -53,8 +53,8 @@ fun TaskView(
 fun TaskViewPreview() {
     MyTheme {
         Column {
-            TaskView(task = Task(name = "Homework", isDone = false), onTaskClick = {})
-            TaskView(task = Task(name = "Homework", isDone = true), onTaskClick = {})
+            TaskView(task = TaskEntity(name = "Homework", isDone = false), onTaskClick = {})
+            TaskView(task = TaskEntity(name = "Homework", isDone = true), onTaskClick = {})
         }
     }
 }
