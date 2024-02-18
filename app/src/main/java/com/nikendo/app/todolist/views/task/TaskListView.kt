@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -13,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.nikendo.app.todolist.intents.TaskIntent
 import com.nikendo.app.todolist.models.TaskEntity
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TaskListView(
     tasks: List<TaskEntity>,
@@ -31,8 +33,12 @@ internal fun TaskListView(
             tasks.forEachIndexed { index, task ->
                 TaskView(
                     task = task,
+                    position = TaskViewPosition.MIDDLE,
                     onTaskClick = {
                         intent(TaskIntent.UpdateTask(it.copy(isDone = !it.isDone)))
+                    },
+                    onRemove = {
+                        intent(TaskIntent.DeleteTask(it))
                     }
                 )
                 if (tasks.size - 1 > index) Spacer(Modifier.height(4.dp))

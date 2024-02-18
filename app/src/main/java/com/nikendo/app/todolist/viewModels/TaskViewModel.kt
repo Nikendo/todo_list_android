@@ -36,6 +36,7 @@ class TaskViewModel(private val database: AppDatabase) : ViewModel() {
             is TaskIntent.LoadTasks -> loadTasks()
             is TaskIntent.AddTask -> addTask(intent.task)
             is TaskIntent.UpdateTask -> updateTask(intent.task)
+            is TaskIntent.DeleteTask -> deleteTask(intent.task)
         }
     }
 
@@ -50,6 +51,13 @@ class TaskViewModel(private val database: AppDatabase) : ViewModel() {
         // change task state
         viewModelScope.launch {
             database.taskDao().updateTask(task)
+        }
+    }
+
+    private fun deleteTask(task: TaskEntity) {
+        // change task state
+        viewModelScope.launch {
+            database.taskDao().deleteTask(task)
         }
     }
 

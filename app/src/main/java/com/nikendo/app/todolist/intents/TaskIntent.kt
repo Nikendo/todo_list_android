@@ -6,5 +6,5 @@ sealed class TaskIntent {
     data object LoadTasks : TaskIntent()
     data class AddTask(val task: TaskEntity) : TaskIntent()
     data class UpdateTask(val task: TaskEntity) : TaskIntent()
-    // data class DeleteTask(val taskId: String): TaskIntent()
+     data class DeleteTask(val task: TaskEntity): TaskIntent()
 }
