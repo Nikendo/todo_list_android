@@ -46,7 +46,8 @@ fun TaskView(
     task: TaskEntity,
     position: TaskViewPosition,
     onTaskClick: (TaskEntity) -> Unit,
-    onRemove: (TaskEntity) -> Unit
+    onRemove: (TaskEntity) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val corner = 16f
     val topRoundedShape = RoundedCornerShape(topStart = corner, topEnd = corner)
@@ -59,14 +60,12 @@ fun TaskView(
         TaskViewPosition.SINGLE -> singleShape
         else -> middleShape
     }
-
     SwipeToDeleteContainer(item = task, onDelete = onRemove) {
         Surface(
             color = MaterialTheme.colorScheme.surfaceVariant,
             shape = shape,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
-//                .padding(vertical = 4.dp)
                 .height(32.dp)
         ) {
             Row(

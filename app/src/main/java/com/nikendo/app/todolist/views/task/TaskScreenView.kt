@@ -1,12 +1,12 @@
 package com.nikendo.app.todolist.views.task
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -37,7 +37,8 @@ fun TaskScreenView(state: TaskState, intent: (TaskIntent) -> Unit, modifier: Mod
                 },
                 onRemove = {
                     intent(TaskIntent.DeleteTask(it))
-                }
+                },
+                modifier = Modifier.animateContentSize()
             )
         }
 
@@ -53,7 +54,8 @@ fun TaskScreenView(state: TaskState, intent: (TaskIntent) -> Unit, modifier: Mod
                     },
                     onRemove = {
                         intent(TaskIntent.DeleteTask(it))
-                    }
+                    },
+                    modifier = Modifier.animateContentSize()
                 )
             }
         }
