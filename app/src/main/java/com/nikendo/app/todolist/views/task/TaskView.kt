@@ -34,6 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nikendo.app.todolist.models.TaskEntity
@@ -66,7 +68,7 @@ fun TaskView(
             shape = shape,
             modifier = modifier
                 .fillMaxWidth()
-                .height(32.dp)
+                .height(48.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -78,7 +80,10 @@ fun TaskView(
                         uncheckedColor = MaterialTheme.colorScheme.primary,
                         checkedColor = MaterialTheme.colorScheme.outline,
                     ),
-                    onCheckedChange = { onTaskClick(task) }
+                    onCheckedChange = { onTaskClick(task) },
+                    modifier = Modifier.semantics {
+                        contentDescription = "Mark ${it.name} as ${if (it.isDone) "not done" else "done"}"
+                    }
                 )
                 Text(
                     text = task.name,

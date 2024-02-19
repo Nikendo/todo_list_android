@@ -33,7 +33,7 @@ import com.nikendo.app.todolist.viewModels.TaskViewModel
 import com.nikendo.app.todolist.views.NewTaskSheetContent
 import com.nikendo.app.todolist.views.task.TaskScreenView
 
-final class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
