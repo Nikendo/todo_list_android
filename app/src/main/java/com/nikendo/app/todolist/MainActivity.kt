@@ -16,22 +16,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.nikendo.app.todolist.intents.TaskIntent
+import com.nikendo.app.todolist.states.BottomSheetState
 import com.nikendo.app.todolist.ui.theme.MyTheme
 import com.nikendo.app.todolist.viewModels.TaskViewModel
-import com.nikendo.app.todolist.views.NewTaskSheetContent
+import com.nikendo.app.todolist.views.sheets.EditTaskSheetContent
+import com.nikendo.app.todolist.views.sheets.NewTaskSheetContent
 import com.nikendo.app.todolist.views.task.TaskScreenView
 
 class MainActivity : ComponentActivity() {
@@ -57,10 +53,7 @@ class MainActivity : ComponentActivity() {
 fun MyApp() {
     val viewModel: TaskViewModel = viewModel(factory = TaskViewModel.factory)
     val state = viewModel.state.collectAsState().value
-
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(false) }
+    val bottomSheetState = viewModel.state.collectAsState().value.bottomSheetState
 
     Scaffold(
         topBar = {
@@ -70,21 +63,28 @@ fun MyApp() {
         },
         content = { padding ->
             TaskScreenView(state, viewModel::processIntent, Modifier.padding(padding))
-            if (showBottomSheet) {
-                ModalBottomSheet(
-                    onDismissRequest = { showBottomSheet = false },
-                    sheetState = sheetState
-                ) {
-                    NewTaskSheetContent(
-                        viewModel,
-                        scope,
-                        sheetState,
-                        showBottomSheet = { showBottomSheet = false })
+            when (bottomSheetState) {
+                is BottomSheetState.Hidden -> Unit
+                is BottomSheetState.CreateTask -> {
+                    ModalBottomSheet(
+                        onDismissRequest = { viewModel.processIntent(TaskIntent.HideBottomSheet) }
+                    ) {
+                        NewTaskSheetContent(viewModel::processIntent)
+                    }
+                }
+
+                is BottomSheetState.EditTask -> {
+                    val task = bottomSheetState.task
+                    ModalBottomSheet(
+                        onDismissRequest = { viewModel.processIntent(TaskIntent.HideBottomSheet) }
+                    ) {
+                        EditTaskSheetContent(task = task, intent = viewModel::processIntent)
+                    }
                 }
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { showBottomSheet = true }) {
+            FloatingActionButton(onClick = { viewModel.processIntent(TaskIntent.ShowNewTaskSheet) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(R.string.add)

@@ -9,6 +9,7 @@ import com.nikendo.app.todolist.App
 import com.nikendo.app.todolist.intents.TaskIntent
 import com.nikendo.app.todolist.models.TaskEntity
 import com.nikendo.app.todolist.repository.AppDatabase
+import com.nikendo.app.todolist.states.BottomSheetState
 import com.nikendo.app.todolist.states.TaskState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,16 +35,20 @@ class TaskViewModel(private val database: AppDatabase) : ViewModel() {
     fun processIntent(intent: TaskIntent) {
         when (intent) {
             is TaskIntent.LoadTasks -> loadTasks()
-            is TaskIntent.AddTask -> addTask(intent.task)
+            is TaskIntent.AddTask -> addTask(intent.description)
             is TaskIntent.UpdateTask -> updateTask(intent.task)
             is TaskIntent.DeleteTask -> deleteTask(intent.task)
+            is TaskIntent.ShowNewTaskSheet -> showCreateTaskSheet()
+            is TaskIntent.ShowEditTaskSheet -> showEditTaskSheet(intent.task)
+            is TaskIntent.HideBottomSheet -> hideBottomSheet()
         }
     }
 
-    private fun addTask(task: TaskEntity) {
+    private fun addTask(taskDescription: String) {
         // add new task to list
         viewModelScope.launch {
-            database.taskDao().insertTask(task)
+            database.taskDao().insertTask(TaskEntity(name = taskDescription, isDone = false))
+            _state.value = _state.value.copy(bottomSheetState = BottomSheetState.Hidden)
         }
     }
 
@@ -51,6 +56,7 @@ class TaskViewModel(private val database: AppDatabase) : ViewModel() {
         // change task state
         viewModelScope.launch {
             database.taskDao().updateTask(task)
+            _state.value = _state.value.copy(bottomSheetState = BottomSheetState.Hidden)
         }
     }
 
@@ -67,6 +73,24 @@ class TaskViewModel(private val database: AppDatabase) : ViewModel() {
             database.taskDao().getAllTasks().collect { tasks ->
                 _state.value = _state.value.copy(tasks = tasks, isLoading = false)
             }
+        }
+    }
+
+    private fun showCreateTaskSheet() {
+        viewModelScope.launch {
+            _state.value = _state.value.copy(bottomSheetState = BottomSheetState.CreateTask)
+        }
+    }
+
+    private fun showEditTaskSheet(task: TaskEntity) {
+        viewModelScope.launch {
+            _state.value = _state.value.copy(bottomSheetState = BottomSheetState.EditTask(task))
+        }
+    }
+
+    private fun hideBottomSheet() {
+        viewModelScope.launch {
+            _state.value = _state.value.copy(bottomSheetState = BottomSheetState.Hidden)
         }
     }
 }
