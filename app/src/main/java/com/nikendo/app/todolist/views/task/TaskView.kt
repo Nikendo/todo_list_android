@@ -18,10 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.HapticFeedbackConstantsCompat
+import androidx.core.view.HapticFeedbackConstantsCompat.HapticFeedbackType
 import com.nikendo.app.todolist.models.TaskEntity
 import com.nikendo.app.todolist.ui.theme.MyTheme
 
@@ -46,6 +49,7 @@ fun TaskView(
         TaskViewPosition.SINGLE -> singleShape
         else -> middleShape
     }
+    val view = LocalView.current
     SwipeToDeleteContainer(item = task, onDelete = onRemove) {
         Surface(
             color = MaterialTheme.colorScheme.surfaceVariant,
@@ -65,9 +69,13 @@ fun TaskView(
                         uncheckedColor = MaterialTheme.colorScheme.primary,
                         checkedColor = MaterialTheme.colorScheme.outline,
                     ),
-                    onCheckedChange = { onDoneClick(task) },
+                    onCheckedChange = {
+                        view.performHapticFeedback(if (it) HapticFeedbackConstantsCompat.TOGGLE_ON else HapticFeedbackConstantsCompat.TOGGLE_OFF)
+                        onDoneClick(task)
+                    },
                     modifier = Modifier.semantics {
-                        contentDescription = "Mark ${it.name} as ${if (it.isDone) "not done" else "done"}"
+                        contentDescription =
+                            "Mark ${it.name} as ${if (it.isDone) "not done" else "done"}"
                     }
                 )
                 Text(
